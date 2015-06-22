@@ -36,6 +36,7 @@
 	white-space: -moz-pre-wrap; /* Firefox */   
 	white-space: -o-pre-wrap;   /* Opera 7 */    
 }
+.csw-infoboard-add-btn {float:right;padding-left:0.5em;vertical-align:bottom;padding-top:3px;color:black;margin-left:10px}
 .csw-infoboard-btn {float:right;padding-left:0.5em;vertical-align:bottom;padding-top:3px;color:#999}
 .csw-infoboard-theme-abstract {color:#333}
 .csw-infoboard-theme-subjects {color:#333}
