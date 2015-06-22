@@ -14,7 +14,7 @@
 <usgin>
 	<jsCSWwidget>
 		<owner>USGIN</owner>
-		<title>CSW Web Client</title>
+		<title>Search NGDS Data Catalog</title>
 		<proxy>/jsCSWwidget/proxy</proxy>
 		<pageSize>20</pageSize>
 		<services>
