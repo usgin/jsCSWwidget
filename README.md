@@ -9,5 +9,8 @@ This project's file structure is organized as a java web application. You can co
 4. Access the demo page by visiting the url http://localhost:8080/jsCSWwidget <br>
 5. The source code of default page provide a basic tutorial. 
 
+# Development
+On Windows, run any IDE or text editor as Administrator (right click program, `Run as administrator`) in order to be able to edit files in Tomcat's webapps directory.
+
 # Configuration
 jsCSWwidget provide a xml file for initial configuration. You can edit the lib/jsCSWwidget/conf.xml file for your own environment.  
