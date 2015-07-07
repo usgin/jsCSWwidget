@@ -1,3 +1,4 @@
+
 <html>
 	<head>
 		<title>USGIN jsCSWwidget Test</title>
@@ -20,18 +21,18 @@
 		<script type="text/javascript" src="../lib/jsCSWwidget/js/usgin.csw.widget.min.js"></script>
 		-->
 		<style>
-			#csw-widget {
-				width: 450px; height:550px; top:50px; left:50%;
-			}
-	
+			body {margin:0px;padding:0px;font-size:0.9em}
+			#csw-widget {width: 450px; height:550px; top:50px; left:50%;}
 			#selected-record-meta {
 				overflow-x: scroll;
-				width:40%;height:50%;background-color:#ccc;padding:10px;font-size:0.8em
+				width:92%;height:50%;background-color:#eee;padding:5px;font-size:0.7em;line-height:1em;
 			}
-			
+			#iframe {border:0px}
 		</style>
 	</head>
 	<body>
+		<div style="width:99%;height:99%">
+			<div style="float:left;width:30%;height:100%;background-color:#f5f6ae">
 		<ul style="line-height:30px">
 			<li><input type="button" onclick="closeCSWwidget()" value="Close Widget">
 			<li><input type="button" onclick="showCSWwidget()" value="Show Widget">
@@ -39,8 +40,12 @@
 			<li><input type="button" onclick="switchStyle('light.css')" value="Change widget to light style">
 			<li><input type="button" onclick="switchStyle('default.css')" value="Change widget to dark style">
 			<li>Drag the widget title bar to move it.
-			<li>WMS/WFS metadata of selected record<div id="selected-record-meta">	No record selected</div>
+			<li>WMS/WFS metadata of selected record<div id="selected-record-meta"> No record selected</div>
 		</ul>
+			</div>
+			<div style="float:right;width:70%;height:100%" id="mapDiv">
+			</div>
+		</div>
 		<div id="csw-widget"></div>	
 	</body>
 
@@ -52,7 +57,8 @@
 		});
 
 		csw.addRecordChosenHandler( function(result) {
-			alert(JSON.stringify(result));
+			//alert(JSON.stringify(result));
+			showMap(result);	
 		});
 	
 		function showCSWwidget() {
@@ -88,5 +94,38 @@
 			}
 		}
 	
+		function showMap(meta) {
+			if (meta.result.status !== 'OK') {
+				alert("No response from Server");
+				return;
+			}
+			var url = "https://maps.nrel.gov/geothermal-prospector/#/?baselayer=6&zoomlevel=3";	
+			for (var i=0; i<meta.result.links.length; i++) {
+				var link = meta.result.links[i];
+				if (link.APILabel === "OGC:WMS") {
+					url += "&wmsHost=" + link.linkURL;
+					for (var j=0; j<link.linkParameters.length; j++) {
+						var param = link.linkParameters[j];
+						if (param.linkParameterLabel === "layerName") {
+							url += "&wmsLayerName=" + encodeURIComponent(param.linkParameterValue);
+							break; // just load the first layer
+						}
+					}
+				} else if (link.APILabel === "OGC:WFS") {
+					url += "&wfsHost=" + link.linkURL;
+					for (var j=0; i<link.linkParameters.length; j++) {
+						var param = link.linkParameters[j];
+						if (param.linkParameterLabel === "featureType") {
+							url += "&wfsFeatureTypeName=" + encodeURIComponent(param.linkParameterValue);
+							break; // just load the first layer
+						}
+					}
+				}
+			}
+			console.log(url);	
+			$("#mapDiv").empty().append("<iframe id='mapFrame' src='" + url + "' style='width:100%;height:100%'></iframe>");
+		}
+
 	</script>
 </html>
+
